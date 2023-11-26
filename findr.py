@@ -8,7 +8,7 @@ class Findr(pygame.sprite.Sprite):   #inheritance
 		self.rect = self.image.get_rect(center = (60,60))
 		# movement 
 		self.pos = self.rect.center
-		self.speed = 3
+		self.speed = 2
 		self.direction = pygame.math.Vector2(0,0)
 		# path
 		self.path = []
