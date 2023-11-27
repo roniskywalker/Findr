@@ -12,6 +12,9 @@ class Model:
 		self.select_surf = pygame.image.load('select.png'). convert_alpha()   #creating the selection pointer
 		# pathfinding
 		self.path = []   #creating a empty list
+		self.dist = 0
+		self.time = 0
+		self.text_font = pygame.font.SysFont("Arial", 10)
 		# Findr
 		self.findr = pygame.sprite.GroupSingle(Findr(self.empty_path))   #Creating instance of findr class
 	
@@ -50,10 +53,32 @@ class Model:
 				y = (point[1] * 32) + 16   #getting the actual point
 				points.append((x,y))   #appending points
 			pygame.draw.lines(screen,'#ffffff',False,points,9)   #drawing the line
-	
+
+	def calc_dist(self):
+		if self.path:
+			self.dist = (len(self.path) - 1) * 90
+			# print(self.dist)
+
+	def calc_time(self):
+		if self.dist:
+			self.time = round(self.dist * 0.013,2)
+			# print(self.time)
+
+	def draw_text(self):
+		font = pygame.font.SysFont(None, 55)
+		text = f"{str(self.time)}min({str(self.dist)}m)"
+		text_col = (255, 255, 255)
+		text_pos = (40, 800)
+		img = font.render(text, True, text_col)
+		screen.blit(img, text_pos)
+
 	def update(self):
 		self.draw_active_cell()
 		self.draw_path()
+		self.calc_dist()
+		self.calc_time()
+		self.draw_text()
+		
 		# findr updating and drawing
 		self.findr.update()
 		self.findr.draw(screen)
@@ -95,9 +120,12 @@ matrix = [[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0]]
+
+#Object
 pathfinder = Model(matrix)
 
-while True:
+run = True
+while run:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()
