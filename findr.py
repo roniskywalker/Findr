@@ -5,7 +5,7 @@ class Findr(pygame.sprite.Sprite):   #inheritance
 		# basic
 		super().__init__()
 		self.image = pygame.image.load('person.png').convert_alpha()
-		self.rect = self.image.get_rect(center = (60,60))
+		self.rect = self.image.get_rect(center = (64,192))
 		# movement 
 		self.pos = self.rect.center
 		self.speed = 2
